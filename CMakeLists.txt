@@ -15,7 +15,7 @@ set(SOURCES
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/int.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/src/logger.cc
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cc)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

@@ -9,7 +9,7 @@ struct Int {
     Int(const std::string& name, int64_t value);
 
     Int& operator=(const Int& other);
-    operator int() const;
+    operator int64_t() const;
 
 private:
     int64_t value_;

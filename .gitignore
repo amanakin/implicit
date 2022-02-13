@@ -31,3 +31,4 @@
 build/
 out/
 cmake-build-debug/
+.idea/
