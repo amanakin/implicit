@@ -4,7 +4,9 @@
 #include <string>
 #include <stdexcept>
 
-std::string currentDateTime();
+std::string CurrentDateTime();
+
+std::string IntToHex(uint64_t val);
 
 template<typename ... Args>
 std::string string_format( const std::string& format, Args ... args )

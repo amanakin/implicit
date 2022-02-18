@@ -8,16 +8,34 @@ uint64_t Int::CopyCount_    = 0;
 uint64_t Int::TmpCount_     = 0;
 uint64_t Int::CurrVarCount_ = 0;
 
-#define LOG_FUNC \
-    Logger::log(string_format("%s, %d: %lli, [%p], <%s>, {%llu}", \
-    __func__, __LINE__,                                           \
-    value_, this, name_.c_str(), index_))
+std::string Int::getVarInfo() const {
+    auto color = IntToHex(reinterpret_cast<uint64_t>(this)); 
+    //std::reverse(color.begin(), color.end());
+    return 
+    string_format("[<font color=#%s>%p</font>] \"%-20s(%10lli) {%llu}",
+        color.c_str(),
+        this,
+        (name_ + "\"").c_str(),
+        value_,
+        index_);
+}                              
 
-#define LOG_FUNC_BIN \
-    Logger::log(string_format("%s, %d: %lli, [%p], <%s>, {%llu} and %lli, [%p], <%s>, {%llu}", \
-    __func__, __LINE__,                                                                        \
-    lhs.value_, &lhs, lhs.name_.c_str(), lhs.index_,                                           \
-    rhs.value_, &rhs, rhs.name_.c_str(), rhs.index_))
+#define LOG_FUNC                            \
+    Logger::log(string_format("%-40s: %s",  \
+    __PRETTY_FUNCTION__,                    \
+    getVarInfo().c_str()))
+
+#define LOG_CONSTR                                  \
+    Logger::log(string_format("%-40: %-80s by %s",  \
+    __PRETTY_FUNCTION__,                            \
+    getVarInfo().c_str(),                           \
+    other.getVarInfo().c_str()))                    
+
+#define LOG_FUNC_BIN(OPER)                               \
+    Logger::log(string_format("%-40s: %-80s "#OPER" %s", \
+    __PRETTY_FUNCTION__,                                 \
+    lhs.getVarInfo().c_str(),                            \
+    rhs.getVarInfo().c_str()))
 
 // ================================================================================
 // ====================== Constructors ============================================
@@ -49,7 +67,8 @@ Int::Int(const std::string& name, int64_t value)
 
 Int::Int(int64_t value) 
     : name_("default_name"),
-    value_(value)
+    value_(value),
+    index_(CurrVarCount_++)
 {
     LOG_FUNC;
 }
@@ -63,23 +82,34 @@ Int::operator int64_t() const {
     return value_;
 }
 
-Int::Int(const Int& other) {
-
+Int::Int(const Int& other)
+    : name_("default_name"),
+    value_(other.value_),
+    index_(CurrVarCount_++) 
+{
+    LOG_CONSTR;
 }
 
 Int& Int::operator=(const Int& other) {
     value_ = other.value_;
-    LOG_FUNC;
+    LOG_CONSTR;
 
     return *this;
 }
 
 
-Int::Int(Int&& other) {
-    
+Int::Int(Int&& other) 
+    : name_("default_name"),
+    value_(other.value_),
+    index_(CurrVarCount_++) 
+{
+    LOG_CONSTR; 
 }
 
 Int& Int::operator=(Int&& other) {
+    value_ = other.value_;
+    LOG_CONSTR;
+
     return *this;
 }
 
@@ -118,27 +148,27 @@ Int  Int::operator--(int) {
 // ================================================================================
 
 Int operator+(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(+);
     return Int(lhs.value_ + rhs.value_);
 }
 
 Int operator-(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(-);
     return Int(lhs.value_ - rhs.value_);
 }
 
 Int operator*(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(*);
     return Int(lhs.value_ * rhs.value_);
 }
 
 Int operator/(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(/);
     return Int(lhs.value_ / rhs.value_);
 }
 
 Int operator%(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(%);
     return Int(lhs.value_ % rhs.value_);
 }
 
@@ -148,31 +178,31 @@ Int operator%(const Int& lhs, const Int& rhs) {
 
 Int& operator+=(Int& lhs, const Int& rhs) {
     lhs.value_ += rhs.value_;
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(+=);
     return lhs;
 }
 
 Int& operator-=(Int& lhs, const Int& rhs) {
     lhs.value_ -= rhs.value_;
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(-=);
     return lhs;
 }
 
 Int& operator*=(Int& lhs, const Int& rhs) {
     lhs.value_ *= rhs.value_;
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(*=);
     return lhs;
 }
 
 Int& operator/=(Int& lhs, const Int& rhs) {
     lhs.value_ /= rhs.value_;
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(/=);
     return lhs;
 }
 
 Int& operator%=(Int& lhs, const Int& rhs) {
     lhs.value_ %= rhs.value_;
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(%=);
     return lhs;
 }
 
@@ -181,31 +211,31 @@ Int& operator%=(Int& lhs, const Int& rhs) {
 // ================================================================================
 
 bool operator==(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(==);
     return lhs.value_ == rhs.value_;
 }
 
 bool operator!=(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(!=);
     return lhs.value_ != rhs.value_;
 }
 
 bool operator<=(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(<=);
     return lhs.value_ <= rhs.value_;
 }
 
 bool operator>=(const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(>=);
     return lhs.value_ >= rhs.value_;
 }
 
 bool operator< (const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(<);
     return lhs.value_ < rhs.value_;
 }
 
 bool operator> (const Int& lhs, const Int& rhs) {
-    LOG_FUNC_BIN;
+    LOG_FUNC_BIN(>);
     return lhs.value_ > rhs.value_;
 }

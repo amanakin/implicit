@@ -1,9 +1,9 @@
 // main.cc
 
-
-#define MOVE_SEMANTICS
+#include <vector>
 #include <int.h>
 #include <logger.h>
+#include <utils.h>
 
 #define VAR_INT(name, ...) \
     Int name((#name), ##__VA_ARGS__)
@@ -18,24 +18,31 @@ Int funcRef(Int& some) {
     return some + tmp;
 }
 
+void SimpleTest() {
 
+};
+
+void SortTest() {
+    std::vector<Int> array(100);
+    for (auto& el: array) {
+        el = Int(std::rand() % 200);
+    }
+
+    std::stable_sort(array.begin(), array.end());
+};
 
 int main() {
     try {
-        Logger::createLogger("log_file.txt");
+        Logger::createLogger("log_file.html");
+        Logger::setTimeCtrl(false);
+        Logger::log("Log file createad " + CurrentDateTime());
     } catch (std::exception& err) {
         std::cerr << err.what() << '\n';
     }
 
-    VAR_INT(a, 0);
-    VAR_INT(b);
-
-    ++a;
-    ++b;
-
-    b = funcCopy(a);
-    VAR_INT(c);
-    c = funcRef(b);
+    {
+        SortTest();
+    }
 
     Logger::deleteLogger();
 }

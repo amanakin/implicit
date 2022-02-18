@@ -4,37 +4,48 @@
 #include <logger.h>
 #include <utils.h>
 
-Logger* Logger::logger = nullptr;
+Logger* Logger::Logger_ = nullptr;
 
 Logger::Logger(const std::string& name) 
-    : logFile(name, std::fstream::out)
+    : logFile_(name, std::fstream::out),
+    isTime_(true)
 {
-    if (!logFile.is_open()) {
+    if (!logFile_.is_open()) {
         throw std::logic_error("can't open file");
     }
+
+    logFile_ << "<pre>\n";
 }
 
 Logger::~Logger() {
-    logFile.close();
+    logFile_ << "</pre>\n";
+    logFile_.close();
 }
 
 void Logger::createLogger(const std::string& logFilename) {
-    if (logger != nullptr) {
-        delete logger;
+    if (Logger_ != nullptr) {
+        delete Logger_;
     }
 
-    logger = new Logger(logFilename);
+    Logger_ = new Logger(logFilename);
 }
 
 void Logger::log(const std::string& data) {
-    if (logger != nullptr) {
-        logger->logFile << currentDateTime() << ": " << data << '\n';
+    if (Logger_ != nullptr) {
+        if (Logger_->isTime_) {
+            Logger_->logFile_ << CurrentDateTime() << ": "; 
+        }
+        Logger_->logFile_ << data << '\n';
     }
 }
 
 void Logger::deleteLogger() {
-    if (logger != nullptr) {
-        delete logger;
-        logger = nullptr;
+    if (Logger_ != nullptr) {
+        delete Logger_;
+        Logger_ = nullptr;
     }
+}
+
+void Logger::setTimeCtrl(bool isTime) {
+    Logger_->isTime_ = isTime;
 }
