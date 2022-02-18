@@ -6,6 +6,8 @@
 
 uint64_t Int::CopyCount_    = 0;
 uint64_t Int::TmpCount_     = 0;
+uint64_t Int::MoveCount_    = 0;
+
 uint64_t Int::CurrVarCount_ = 0;
 
 std::string Int::getVarInfo() const {
@@ -21,25 +23,35 @@ std::string Int::getVarInfo() const {
 }                              
 
 #define LOG_FUNC                            \
-    Logger::log(string_format("%-40s: %s",  \
+    Logger::log(string_format("%-45s: %s",  \
     __PRETTY_FUNCTION__,                    \
     getVarInfo().c_str()))
 
-#define LOG_CONSTR                                  \
-    Logger::log(string_format("%-40: %-80s by %s",  \
-    __PRETTY_FUNCTION__,                            \
-    getVarInfo().c_str(),                           \
+#define LOG_COPY                                     \
+    Logger::log(string_format("%-45s: %-80s by %s",  \
+    __PRETTY_FUNCTION__,                             \
+    getVarInfo().c_str(),                            \
     other.getVarInfo().c_str()))                    
 
 #define LOG_FUNC_BIN(OPER)                               \
-    Logger::log(string_format("%-40s: %-80s "#OPER" %s", \
+    Logger::log(string_format("%-45s: %-80s %2s %s",     \
     __PRETTY_FUNCTION__,                                 \
     lhs.getVarInfo().c_str(),                            \
+    #OPER,                                               \
     rhs.getVarInfo().c_str()))
 
 // ================================================================================
 // ====================== Constructors ============================================
 // ================================================================================
+
+Int::Int(int64_t value) 
+    : name_("default_name"),
+    value_(value),
+    index_(CurrVarCount_++)
+{
+    LOG_FUNC;
+    TmpCount_++;
+}
 
 Int::Int()
     : name_("default_name"),
@@ -47,6 +59,7 @@ Int::Int()
     index_(CurrVarCount_++)
 {
     LOG_FUNC;
+    TmpCount_++;
 }
 
 Int::Int(const std::string& name) 
@@ -59,14 +72,6 @@ Int::Int(const std::string& name)
 
 Int::Int(const std::string& name, int64_t value) 
     : name_(name),
-    value_(value),
-    index_(CurrVarCount_++)
-{
-    LOG_FUNC;
-}
-
-Int::Int(int64_t value) 
-    : name_("default_name"),
     value_(value),
     index_(CurrVarCount_++)
 {
@@ -87,28 +92,51 @@ Int::Int(const Int& other)
     value_(other.value_),
     index_(CurrVarCount_++) 
 {
-    LOG_CONSTR;
+    LOG_COPY;
+    TmpCount_++;
+    CopyCount_++;
+}
+
+Int::Int(const std::string& name, const Int& other)
+    : name_(name),
+    value_(other.value_),
+    index_(CurrVarCount_++)
+{   
+    LOG_COPY;
+    CopyCount_++;
 }
 
 Int& Int::operator=(const Int& other) {
     value_ = other.value_;
-    LOG_CONSTR;
+    LOG_COPY;
+    CopyCount_++;
 
     return *this;
 }
 
-
 Int::Int(Int&& other) 
     : name_("default_name"),
     value_(other.value_),
-    index_(CurrVarCount_++) 
+    index_(CurrVarCount_++)
 {
-    LOG_CONSTR; 
+    LOG_COPY; 
+    TmpCount_++;
+    MoveCount_++;
+}
+
+Int::Int(const std::string& name, Int&& other) 
+    : name_(name),
+    value_(other.value_),
+    index_(CurrVarCount_++)
+{
+    LOG_COPY;
+    MoveCount_++;
 }
 
 Int& Int::operator=(Int&& other) {
     value_ = other.value_;
-    LOG_CONSTR;
+    LOG_COPY;
+    MoveCount_++;
 
     return *this;
 }

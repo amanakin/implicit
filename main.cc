@@ -9,17 +9,24 @@
     Int name((#name), ##__VA_ARGS__)
 
 Int funcCopy(Int some) {
-    VAR_INT(tmp, 10);
-    return some + tmp;
+    VAR_INT(ten, 10);
+    return some + ten;
 }
 
 Int funcRef(Int& some) {
-    VAR_INT(tmp, 10);
-    return some + tmp;
+    VAR_INT(ten, 10);
+    return some + ten;
 }
 
-void SimpleTest() {
+void RefCopyTest() {
+    VAR_INT(var1, 0);
+    VAR_INT(var2, var1);
 
+    Logger::log("Reference:");
+    var1 = funcRef(var1);
+
+    Logger::log("Copy:");
+    var2 = funcCopy(var2);
 };
 
 void SortTest() {
@@ -41,8 +48,13 @@ int main() {
     }
 
     {
-        SortTest();
+        RefCopyTest();
     }
+
+    Logger::log("");
+    Logger::log(string_format("%-25s = %llu", "Copy count",              Int::CopyCount_));
+    Logger::log(string_format("%-25s = %llu", "Move count",              Int::MoveCount_));
+    Logger::log(string_format("%-25s = %llu", "Temporary objects count", Int::TmpCount_));
 
     Logger::deleteLogger();
 }
