@@ -1,15 +1,13 @@
 // utils.cc
 
 #include <utils.h>
+#include <chrono>
 
 std::string currentDateTime() {
-    time_t now = time(nullptr);
-    tm     calTime = {0};
-    char   buf[80] = "";
-    calTime = *localtime(&now);
+    auto currTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    auto timeStr = std::ctime(&currTime);
+    timeStr[std::strlen(timeStr) - 1] = '\0';
 
-    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &calTime);
-
-    return buf;
+    return timeStr;
 }
 

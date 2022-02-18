@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(implicit)
 
 set(CMAKE_CXX_COMPILER clang++)
-set(CMAKE_CXX_STANDARD 98)
+set(CMAKE_CXX_STANDARD 14)
 
 set (CMAKE_CXX_FLAGS "-O3 ${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined") 
 set (CMAKE_LINKER_FLAGS "-O3 ${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined") 

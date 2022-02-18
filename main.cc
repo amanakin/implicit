@@ -1,10 +1,24 @@
 // main.cc
 
+
+#define MOVE_SEMANTICS
 #include <int.h>
 #include <logger.h>
 
 #define VAR_INT(name, ...) \
-    Int name(__VA_ARGS__, #name)
+    Int name((#name), ##__VA_ARGS__)
+
+Int funcCopy(Int some) {
+    VAR_INT(tmp, 10);
+    return some + tmp;
+}
+
+Int funcRef(Int& some) {
+    VAR_INT(tmp, 10);
+    return some + tmp;
+}
+
+
 
 int main() {
     try {
@@ -13,11 +27,15 @@ int main() {
         std::cerr << err.what() << '\n';
     }
 
-    Int a("a", 1);
-    Int b("b", 2);
+    VAR_INT(a, 0);
+    VAR_INT(b);
 
-    Int c;
-    c = a + b;
+    ++a;
+    ++b;
+
+    b = funcCopy(a);
+    VAR_INT(c);
+    c = funcRef(b);
 
     Logger::deleteLogger();
 }
