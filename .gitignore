@@ -32,4 +32,4 @@ build/
 out/
 cmake*/
 .idea/
-.DS_store/
+.DS_store
