@@ -30,6 +30,6 @@
 .vscode/
 build/
 out/
-cmake-build-debug/
+cmake*/
 .idea/
 .DS_store/
