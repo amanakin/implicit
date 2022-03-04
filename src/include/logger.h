@@ -9,10 +9,12 @@ struct Logger {
     static void deleteLogger();
     static void setTimeCtrl(bool isTime);
 
-private:
-    Logger(const Logger& other);
-    Logger& operator=(const Logger& other);
+    Logger(const Logger& other) = delete;
+    Logger& operator=(const Logger& other) = delete;
+    Logger(Logger&& other) = delete;
+    Logger& operator=(Logger&& other) = delete;
 
+private:
     explicit Logger(const std::string& logFilename);
     ~Logger();
 

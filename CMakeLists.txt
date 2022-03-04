@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.15)
 project(implicit)
 
-set(CMAKE_CXX_COMPILER clang++)
-set(CMAKE_CXX_STANDARD 14)
+set(CXX clang++)
+set(CMAKE_CXX_STANDARD 20)
 
-set (CMAKE_CXX_FLAGS "-O0  ${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined") 
-set (CMAKE_LINKER_FLAGS "-O0 ${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined") 
+set(SANITIZER_FLAGS "-fsanitize=address -fsanitize=undefined")
 
-include_directories(src/include)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZER_FLAGS}")
+set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} ${SANITIZER_FLAGS}") 
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/include
+                    ${CMAKE_CURRENT_SOURCE_DIR}/src/vector/include
+                    ${CMAKE_CURRENT_SOURCE_DIR}/src/color/include)
 
 set(SOURCES main.cc)
 
@@ -15,7 +19,11 @@ set(SOURCES
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/int.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/src/logger.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cc)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/rec_cnt.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/graph_logger.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/color/color.cc
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

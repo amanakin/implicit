@@ -1,0 +1,7 @@
+# ninja log v5
+1	388	1645740448912572609	CMakeFiles/implicit.dir/src/rec_cnt.cc.o	863b66e03522e237
+1	609	1645740449136857228	CMakeFiles/implicit.dir/src/utils.cc.o	69256899064862e4
+1	761	1645740449289198552	CMakeFiles/implicit.dir/src/int.cc.o	966fcbcb3fe16174
+1	912	1645740449439707180	CMakeFiles/implicit.dir/src/logger.cc.o	50f36dbd0b9d5464
+0	926	1645740449454250235	CMakeFiles/implicit.dir/main.cc.o	e2880d2adc389bb
+926	965	1645740449495514219	implicit	e0b1aa98162ddfa6

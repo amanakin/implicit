@@ -23,9 +23,7 @@ Logger::~Logger() {
 }
 
 void Logger::createLogger(const std::string& logFilename) {
-    if (Logger_ != nullptr) {
-        delete Logger_;
-    }
+    delete Logger_;
 
     Logger_ = new Logger(logFilename);
 }

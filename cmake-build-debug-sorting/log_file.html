@@ -1,0 +1,20 @@
+<pre>
+Log file createad Fri Feb 25 01:07:30 2022
+    *: Int::Int(const std::string &, int64_t)       : [<font color=#ae6ba0>0x16bae6ba0</font>] "var1"               (         0) {0}
+    *: Int::Int(const std::string &, const Int &)   : [<font color=#ae6c30>0x16bae6c30</font>] "var2"               (         0) {1}   by [<font color=#ae6ba0>0x16bae6ba0</font>] "var1"               (         0) {0}
+Reference:
+   **: Int::Int(const std::string &, int64_t)       : [<font color=#ae69d0>0x16bae69d0</font>] "ten"                (        10) {2}
+   **: Int operator+(const Int &, const Int &)      : [<font color=#ae6ba0>0x16bae6ba0</font>] "var1"               (         0) {0}    + [<font color=#ae69d0>0x16bae69d0</font>] "ten"                (        10) {2}
+  ***: Int::Int(int64_t)                            : [<font color=#ae6d00>0x16bae6d00</font>] "default_name"       (        10) {3}
+    *: Int &Int::operator=(Int &&)                  : [<font color=#ae6ba0>0x16bae6ba0</font>] "var1"               (        10) {0}   by [<font color=#ae6d00>0x16bae6d00</font>] "default_name"       (        10) {3}
+Copy:
+    *: Int::Int(const Int &)                        : [<font color=#ae6de0>0x16bae6de0</font>] "default_name"       (         0) {4}   by [<font color=#ae6c30>0x16bae6c30</font>] "var2"               (         0) {1}
+   **: Int::Int(const std::string &, int64_t)       : [<font color=#ae69d0>0x16bae69d0</font>] "ten"                (        10) {5}
+   **: Int operator+(const Int &, const Int &)      : [<font color=#ae6de0>0x16bae6de0</font>] "default_name"       (         0) {4}    + [<font color=#ae69d0>0x16bae69d0</font>] "ten"                (        10) {5}
+  ***: Int::Int(int64_t)                            : [<font color=#ae6d90>0x16bae6d90</font>] "default_name"       (        10) {6}
+    *: Int &Int::operator=(Int &&)                  : [<font color=#ae6c30>0x16bae6c30</font>] "var2"               (        10) {1}   by [<font color=#ae6d90>0x16bae6d90</font>] "default_name"       (        10) {6}
+
+Copy count                = 2
+Move count                = 2
+Temporary objects count   = 3
+</pre>
