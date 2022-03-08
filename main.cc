@@ -11,43 +11,19 @@
 #define VAR_INT(name, ...) \
     Int name((#name), ##__VA_ARGS__)
 
-template <typename T>
-struct Test {
-    void Put(T&& val) {
-    }
-};
-
-Int Module(Int &lhs, Int &rhs) {
-    RecCnt rec;
-
-    VAR_INT(obj, lhs % rhs);
-
-    return obj;
-}
-
-Int funcRef(Int& some) {
-    RecCnt rec;
-    VAR_INT(ten, 10);
-    return some + ten;
-}
-
-void RefCopyTest() {
-    VAR_INT(var1, 1);
-    VAR_INT(var2, 2);
-    Int var3 = Module(var1, var2);
-};
-
-void SortTest() {
-    std::vector<Int> array(100);
-    for (auto& el: array) {
-        // el = Int(std::rand() % 200);
+Int AddWithBound(const Int& a, const Int& b) {
+    VAR_INT(res, a + b);
+    if (res > 1000) {
+        res = 1000;
+    } else if (res < 0) {
+        res = 0;
     }
 
-    std::stable_sort(array.begin(), array.end());
-};
+    return res;
+}
 
 int main() {
-    std::string LogFilename = "yes_move_yes_nrvo";
+    std::string LogFilename = "no_move_yes_nrvo";
 
     Logger::createLogger("log_file.html");
     Logger::setTimeCtrl(false);
@@ -57,7 +33,10 @@ int main() {
     GraphLogger::log("digraph graph_file {\nnodesep=1;\n");
 
     {
-        RefCopyTest();
+        VAR_INT(a, 500);
+        VAR_INT(b, 1000);
+
+        Int c = AddWithBound(a, b);
     }
 
     GraphLogger::log("}\n");
@@ -70,5 +49,5 @@ int main() {
     Logger::deleteLogger();
 
     // popen
-    system(("dot -Tpdf " + LogFilename + ".dot -o " + LogFilename + ".pdf").c_str());
+    system(("dot -Tsvg " + LogFilename + ".dot -o " + LogFilename + ".svg").c_str());
 }

@@ -72,6 +72,14 @@ void LogBinary(const std::string& binaryFucntion, GraphLogger::Id lhs, GraphLogg
 
 #define LOG_BINARY LogBinary(__PRETTY_FUNCTION__, lhs.lastId_, rhs.lastId_)
 
+void LogCompare(const std::string& cmpFunction, GraphLogger::Id lhs, GraphLogger::Id rhs) {
+    auto id = GraphLogger::addFunctionNode(cmpFunction);
+    GraphLogger::addEdge(lhs, id, GraphLogger::EdgeType::Dotted);
+    GraphLogger::addEdge(rhs, id, GraphLogger::EdgeType::Dotted);
+}
+
+#define LOG_CMP LogCompare(__PRETTY_FUNCTION__, lhs.lastId_, rhs.lastId_)
+
 #define LOG_FUNC                                  \
     Logger::log(StringFormat("%5.*s: %-45s: %s",  \
     RecCnt::GetRecoursiveLevel(),                 \
@@ -353,35 +361,41 @@ Int& operator%=(Int& lhs, const Int& rhs) {
 bool operator==(const Int& lhs, const Int& rhs) {
     RecCnt rec;
     LOG_FUNC_BIN(==);
+    LOG_CMP;
     return lhs.value_ == rhs.value_;
 }
 
 bool operator!=(const Int& lhs, const Int& rhs) {
     RecCnt rec;
     LOG_FUNC_BIN(!=);
+    LOG_CMP;
     return lhs.value_ != rhs.value_;
 }
 
 bool operator<=(const Int& lhs, const Int& rhs) {
     RecCnt rec;
     LOG_FUNC_BIN(<=);
+    LOG_CMP;
     return lhs.value_ <= rhs.value_;
 }
 
 bool operator>=(const Int& lhs, const Int& rhs) {
     RecCnt rec;
     LOG_FUNC_BIN(>=);
+    LOG_CMP;
     return lhs.value_ >= rhs.value_;
 }
 
 bool operator< (const Int& lhs, const Int& rhs) {
     RecCnt rec;
     LOG_FUNC_BIN(<);
+    LOG_CMP;
     return lhs.value_ < rhs.value_;
 }
 
 bool operator> (const Int& lhs, const Int& rhs) {
     RecCnt rec;
     LOG_FUNC_BIN(>);
+    LOG_CMP;
     return lhs.value_ > rhs.value_;
 }

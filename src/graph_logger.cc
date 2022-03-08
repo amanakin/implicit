@@ -3,6 +3,7 @@
 #include <graph_logger.h>
 #include <utils.h>
 #include <int.h>
+#include <iostream>
 
 static std::string ConvertEdgeType(GraphLogger::EdgeType edgeType) {
     switch (edgeType) {
@@ -41,8 +42,22 @@ void GraphLogger::deleteLogger() {
 }
 
 void GraphLogger::log(const std::string& str) {
-    if (Logger_ != nullptr) {
+    if (Logger_ == nullptr) {
+        return;
+    }
+
+    if ((str.find("r<") == std::string::npos) && (str.find("r>") == std::string::npos)) {
         Logger_->logFile_ << str;
+    } else {
+        auto logStr = str;
+        if (str.find("r<") != std::string::npos) {
+            logStr = logStr.replace(str.find("r<"), 2, "r\\<");
+        }
+        if (str.find("r>") != std::string::npos) {
+            logStr = logStr.replace(str.find("r>"), 2, "r\\>");
+        }
+
+        Logger_->logFile_ << logStr;
     }
 }
 

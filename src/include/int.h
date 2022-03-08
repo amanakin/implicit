@@ -4,12 +4,13 @@
 
 #include <graph_logger.h>
 
-#define MOVE_AVAIL
+// #define MOVE_AVAIL
 
 struct Int {
     Int();
     explicit Int(const std::string& name);
     Int(const std::string& name, int64_t value);
+    Int(int64_t value);
 
     explicit operator int64_t() const;
 
@@ -41,8 +42,6 @@ private:
 
     static uint64_t CurrVarCount_;
     static std::string DefaultName_;
-
-    explicit Int(int64_t value);
 
     // Text log info
     [[nodiscard]] std::string getVarInfo() const;
