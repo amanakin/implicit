@@ -4,8 +4,9 @@ project(implicit)
 set(CXX clang++)
 set(CMAKE_CXX_STANDARD 20)
 
-set(SANITIZER_FLAGS "-fsanitize=address -fsanitize=undefined")
-# -fno-elide-constructors
+set(SANITIZER_FLAGS " -fsanitize=address -fsanitize=alignment -fsanitize=bool -fsanitize=bounds -fsanitize=enum -fsanitize=float-cast-overflow -fsanitize=float-divide-by-zero -fsanitize=integer-divide-by-zero -fsanitize=nonnull-attribute -fsanitize=null -fsanitize=object-size -fsanitize=return -fsanitize=returns-nonnull-attribute -fsanitize=shift -fsanitize=signed-integer-overflow -fsanitize=undefined -fsanitize=unreachable -fsanitize=vla-bound -fsanitize=vptr")
+
+# -fno-elide-constructors #
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZER_FLAGS}")
 set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} ${SANITIZER_FLAGS}") 
 

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <int.h>
+#include <type_traits>
 
 #include <logger.h>
 #include <graph_logger.h>
@@ -23,8 +24,8 @@ Int AddWithBound(const Int& a, const Int& b) {
 }
 
 int main() {
-    std::string LogFilename = "yes_move_yes_nrvo_bad_move";
 
+    std::string LogFilename = "yes_move_yes_nrvo_bad_move";
     Logger::createLogger("log_file.html");
     Logger::setTimeCtrl(false);
     Logger::log("Log file createad " + CurrentDateTime());
@@ -37,6 +38,8 @@ int main() {
         VAR_INT(b, 1000);
 
         Int c = AddWithBound(a, b);
+
+        std::is_constant_evaluated();
     }
 
     GraphLogger::log("}\n");
