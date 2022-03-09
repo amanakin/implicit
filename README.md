@@ -84,11 +84,10 @@ We well get this:
 The example was going with Move and RNVO.
 It can be seen that the RNVO didn't really work.
 That is, you should not write *std::move* always.
-Always think about what you write when programming in C++.
 
 ## Conclusion
 
-
+Always think about what you write when programming in C++.
 
 ### References
 * [Move_Semantics](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2027.html#Move_Semantics)
