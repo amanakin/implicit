@@ -2,11 +2,11 @@
 
 ## Introduction
 
-## Examples
+## Move vs Copy
 
-| Move   | Copy Elision |
-|--------| ------ |
-| Avail <object data="https://github.com/amanakin/implicit/blob/master/examples/no_move_no_nrvo.pdf" type="application/pdf" width="400px" height="400px"></object> | Avail |
-|Non Avail | Non avail| 
+|                       |                                  Move unavailiable                                  |                                                                                Move availiable |                               
+|:----------------------|:-----------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------------:|
+| **NRVO unavailiable** | ![](https://github.com/amanakin/implicit/blob/master/examples/no_move_no_nrvo.svg)  |            ![](https://github.com/amanakin/implicit/blob/master/examples/yes_move_no_nrvo.svg) |
+| **NRVO availiable**   | ![](https://github.com/amanakin/implicit/blob/master/examples/no_move_yes_nrvo.svg) | ![](/examples/https://github.com/amanakin/implicit/blob/master/examples/yes_move_yes_nrvo.svg) |
 
-<object data="https://github.com/amanakin/implicit/blob/master/examples/no_move_no_nrvo.pdf" type="application/pdf" width="400px" height="400px"></object>
+
