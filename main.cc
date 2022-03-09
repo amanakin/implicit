@@ -19,7 +19,7 @@ Int AddWithBound(const Int& a, const Int& b) {
         res = 0;
     }
 
-    return res;
+    return std::move(res);
 }
 
 int main() {
