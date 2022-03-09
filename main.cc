@@ -23,7 +23,7 @@ Int AddWithBound(const Int& a, const Int& b) {
 }
 
 int main() {
-    std::string LogFilename = "no_move_yes_nrvo";
+    std::string LogFilename = "yes_move_yes_nrvo_bad_move";
 
     Logger::createLogger("log_file.html");
     Logger::setTimeCtrl(false);

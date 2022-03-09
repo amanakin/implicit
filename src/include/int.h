@@ -4,7 +4,7 @@
 
 #include <graph_logger.h>
 
-// #define MOVE_AVAIL
+#define MOVE_AVAIL
 
 struct Int {
     Int();
