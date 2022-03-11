@@ -161,7 +161,6 @@ That is, you should not write ``std::move`` always.
 
 Let's imagine that we have a class ``Pair``:
 ```c++
-// bad_pair
 template <typename Tl, typename Tr>
 struct Pair {
     Pair(const Tl& lhs, const Tr& rhs) :
@@ -184,7 +183,6 @@ since now we are copying objects from
 the constructor parameters to the class fields.
 
 ```c++
-// bad_pair_move
 template <typename Tl, typename Tr>
 struct Pair {
     Pair(Tl lhs, Tr rhs) :
@@ -203,7 +201,6 @@ private:
 ### Solution 3
 
 ```c++
-// bad_pair_together
 template <typename Tl, typename Tr>
 struct Pair {
     Pair(const Tl& lhs, const Tr& rhs) :
@@ -230,7 +227,6 @@ private:
 ### Solution 4
 
 ```c++
-// good_pair
 template <typename Tl, typename Tr>
 struct Pair {
     template <typename Ul, typename Ur>

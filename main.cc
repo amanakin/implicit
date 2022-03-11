@@ -45,17 +45,9 @@ my_forward(typename std::remove_reference<_Tp>::type&& __t) _NOEXCEPT
 // bad_pair_together
 template <typename Tl, typename Tr>
 struct Pair {
-    Pair(const Tl& lhs, const Tr& rhs) :
-            lhs_(lhs), rhs_(rhs)
-    {}
-    Pair(const Tl& lhs, Tr&& rhs) :
-            lhs_(lhs), rhs_(std::move(rhs))
-    {}
-    Pair(Tl&& lhs, const Tr& rhs) :
-            lhs_(std::move(lhs)), rhs_(rhs)
-    {}
-    Pair(Tl&& lhs, Tr&& rhs) :
-            lhs_(std::move(lhs)), rhs_(std::move(rhs))
+    template <typename Ul, typename Ur>
+    Pair(Ul&& lhs, Ur&& rhs) :
+            lhs_(std::forward<Ul>(lhs)), rhs_(std::forward<Ur>(rhs))
     {}
 
 private:
@@ -65,7 +57,7 @@ private:
 
 int main() {
 
-    std::string LogFilename = "bad_pair_together";
+    std::string LogFilename = "good_pair";
     Logger::createLogger("log_file.html");
     Logger::setTimeCtrl(false);
     Logger::log("Log file createad " + CurrentDateTime());
@@ -76,7 +68,7 @@ int main() {
     {
         VAR_INT(a, 42);
 
-        Pair<Int, Int> mystic_pair(a, Int(42));
+        Pair<Int, Int> mystic_pair(a, Int(12));
     }
 
     GraphLogger::log("}\n");
@@ -90,4 +82,5 @@ int main() {
 
     // popen
     system(("dot -Tsvg " + LogFilename + ".dot -o " + LogFilename + ".svg").c_str());
+    system(("cp " + LogFilename + ".svg ../examples/").c_str());
 }
