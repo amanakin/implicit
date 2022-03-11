@@ -1,4 +1,4 @@
-# C++ rvalue reference
+# C++ rvalue references and perfect forwarding with visual examples 
 
 ## Introduction
 
@@ -200,6 +200,8 @@ private:
 
 ### Solution 3
 
+Universal reference
+
 ```c++
 template <typename Tl, typename Tr>
 struct Pair {
@@ -227,6 +229,13 @@ private:
 ### Solution 4
 
 ```c++
+template <typename T>
+T forward(typename remove_reference<T>& t) noexcept {
+    return static_cast<T&&>(t);
+}
+```
+
+```c++
 template <typename Tl, typename Tr>
 struct Pair {
     template <typename Ul, typename Ur>
@@ -247,5 +256,6 @@ private:
 Always think about what you write when programming in C++.
 
 ### References
-* [Move_Semantics](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2027.html#Move_Semantics)
-* [Perfect Forwarding](https://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c)
+* [References and move in C++ by Alex Allain](https://www.cprogramming.com/c++11/rvalue-references-and-move-semantics-in-c++11.html#:%7E:text=Move%20semantics%20allows%20you%20to,object%20and%20used%20by%20another.)
+* [Move semantics and rvalue reference by Bjarne Stroustrup](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2027.html#Move_Semantics)
+* [Perfect forwarding and universal references in C++ by Eli Bendersky](https://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c)
