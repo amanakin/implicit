@@ -175,6 +175,8 @@ private:
 };
 ```
 
+![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair.svg)
+
 ### Solution 2
 But now we know that we can improve the constructor
 with move semantics, 
@@ -195,6 +197,8 @@ private:
     Tr rhs_;
 };
 ```
+
+![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_move.svg)
 
 ### Solution 3
 
@@ -221,6 +225,8 @@ private:
 };
 ```
 
+![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_together.svg)
+
 ### Solution 4
 
 ```c++
@@ -238,7 +244,7 @@ private:
 };
 ```
 
-
+![](https://github.com/amanakin/implicit/blob/master/examples/good_pair.svg)
 
 ## Conclusion
 
