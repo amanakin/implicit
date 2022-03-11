@@ -10,7 +10,7 @@ struct Int {
     Int();
     explicit Int(const std::string& name);
     Int(const std::string& name, int64_t value);
-    Int(int64_t value);
+    Int(int64_t value); // allow implicit conversions
 
     explicit operator int64_t() const;
 
