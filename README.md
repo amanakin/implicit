@@ -157,9 +157,12 @@ That is, you should not write ``std::move`` always.
 
 ## Perfect forwarding
 
-### Solution 1
+### Old solution
 
-Let's imagine that we have a class ``Pair``:
+Let's imagine that we have a class ``Pair``, 
+which contains two objects of different types. 
+Then what should the constructor of such a class look like?
+In C++98, we would have written code like this:
 ```c++
 template <typename Tl, typename Tr>
 struct Pair {
@@ -174,9 +177,18 @@ private:
 };
 ```
 
+And to dump, the constructor will be called like this:
+```c++
+{
+    VAR_INT(a, 42);
+    Pair<Int, Int> mystic_pair(a, Int(12));
+}
+```
+
+And this is how the dump of our code looks like in the current implementation:
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair.svg)
 
-### Solution 2
+### Move solution
 But now we know that we can improve the constructor
 with move semantics, 
 since now we are copying objects from
@@ -198,7 +210,7 @@ private:
 
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_move.svg)
 
-### Solution 3
+### Universal references
 
 Universal reference
 
@@ -226,7 +238,7 @@ private:
 
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_together.svg)
 
-### Solution 4
+### Perfect forwarding
 
 ```c++
 template <typename T>
