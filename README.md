@@ -188,7 +188,6 @@ And to dump, the constructor will be called like this:
 And this is how the dump of our code looks like in the current implementation.
 As you can see, we are using an obviously redundant move constructor.
 We would like to avoid this.
-![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair.svg)
 
 ### Move solution
 Now we know that we can improve the constructor
