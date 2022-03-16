@@ -186,7 +186,7 @@ And to dump, the constructor will be called like this:
 ```
 
 And this is how the dump of our code looks like in the current implementation.
-As you can see, we are using an obviously redundant move constructor.
+As you can see, we are copying data from temporary object `Int(12)`.
 We would like to avoid this.
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair.svg)
 
@@ -210,12 +210,16 @@ private:
 };
 ```
 
-The problem remains the same! We have to copy lvalue into the constructor itself,
+Now we have to copy lvalue into the constructor itself,
 and only THEN the local object is moved into the class field.
+This is much better, but I would like to avoid unnecessary move constructor.
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_move.svg)
 
-### 
+### Overloading
 
+We want rvalue parameter to only be moved and lvalue parameter to be only copied.
+Then let's consider all possible cases of the location of parameters in the constructor.
+So the solution is:
 ```c++
 template <typename Tl, typename Tr>
 struct Pair {
@@ -238,10 +242,20 @@ private:
 };
 ```
 
+But obviously it's not possible to write code this way.
+We need some other simpler, but no less effective solution.
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_together.svg)
 
 ### Perfect forwarding
 
+We want a pretty wrapper around static_cast<T&&>(t)
+when T can be deduced to either U& or U&&,
+depending on the kind of argument to the wrapper (lvalue or rvalue).
+This wrapper is called `forward`. 
+Forward is almost always used in conjunction with universal references.
+You can read more about it this in this article:
+[Perfect forwarding and universal references in C++ by Eli Bendersky](https://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c).
+Here I will give simple implementation of the `forward`:
 ```c++
 template <typename T>
 T forward(typename remove_reference<T>& t) noexcept {
@@ -249,6 +263,8 @@ T forward(typename remove_reference<T>& t) noexcept {
 }
 ```
 
+With the perfect forward and universal references,
+we can rewrite `Pair` code like this. 
 ```c++
 template <typename Tl, typename Tr>
 struct Pair {
@@ -263,11 +279,14 @@ private:
 };
 ```
 
+As a result, we get a simple and effective solution to our problem.
 ![](https://github.com/amanakin/implicit/blob/master/examples/good_pair.svg)
 
 ## Conclusion
 
-Always think about what you write when programming in C++.
+In C++11 added rvalue reference, move, perfect_forwarding, and a lot more.
+As you can see, it is very important to understand how the code you write works
+and apply new features only where needed.
 
 ### References
 * [References and move in C++ by Alex Allain](https://www.cprogramming.com/c++11/rvalue-references-and-move-semantics-in-c++11.html#:%7E:text=Move%20semantics%20allows%20you%20to,object%20and%20used%20by%20another.)
