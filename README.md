@@ -185,11 +185,13 @@ And to dump, the constructor will be called like this:
 }
 ```
 
-And this is how the dump of our code looks like in the current implementation:
+And this is how the dump of our code looks like in the current implementation.
+As you can see, we are using an obviously redundant move constructor.
+We would like to avoid this.
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair.svg)
 
 ### Move solution
-But now we know that we can improve the constructor
+Now we know that we can improve the constructor
 with move semantics, 
 since now we are copying objects from
 the constructor parameters to the class fields.
@@ -208,11 +210,11 @@ private:
 };
 ```
 
+The problem remains the same! We have to copy lvalue into the constructor itself,
+and only THEN the local object is moved into the class field.
 ![](https://github.com/amanakin/implicit/blob/master/examples/bad_pair_move.svg)
 
-### Universal references
-
-Universal reference
+### 
 
 ```c++
 template <typename Tl, typename Tr>
